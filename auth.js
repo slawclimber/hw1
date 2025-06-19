@@ -1,62 +1,77 @@
-function handleGoogleLogin(response) {
-  const statusEl = document.getElementById('loginStatus');
-  
-  // Sprawdź czy otrzymano dane
-  if (!response || !response.credential) {
-    showLoginError('Błąd logowania', 'Nie otrzymano danych z Google');
-    return;
-  }
-  
-  try {
-    // Dekoduj token JWT
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const userEmail = payload.email.toLowerCase();
-    const isEmailVerified = payload.email_verified;
-    
-    // Sprawdź weryfikację emaila
-    if (!isEmailVerified) {
-      showLoginError('Email niezweryfikowany', 'Potwierdź adres email w Google');
-      return;
-    }
-    
-    // Lista dozwolonych użytkowników
-    const ALLOWED_USERS = [
-      "slawecheck@gmail.com"
-    ].map(email => email.toLowerCase());
-    
-    // Sprawdź dostęp
-    if (ALLOWED_USERS.includes(userEmail)) {
-      // Zalogowano pomyślnie
-      localStorage.setItem('google_token', response.credential);
-      localStorage.setItem('user_email', userEmail);
-      
-      statusEl.innerHTML = `
-        <p class="success">Logowanie udane!</p>
-        <p>Przekierowuję...</p>
-      `;
-      
-      // Przekieruj po 1 sekundzie
-      setTimeout(() => window.location.href = '/hw1/', 1000);
+// auth.js
+
+// 👉 Import Firebase SDK z CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// 🔐 Twoja pełna konfiguracja Firebase (UDOSTĘPNIANA PRZEZ FIREBASE KONSOLE)
+const firebaseConfig = {
+   apiKey: "AIzaSyBYfO9kmsrq4-N1QenqnBFt_Mk7RFQZkPU",
+    authDomain: "pwa1-463417.firebaseapp.com",
+    projectId: "pwa1-463417",
+    storageBucket: "pwa1-463417.firebasestorage.app",
+    messagingSenderId: "535969974495",
+    appId: "1:535969974495:web:88a7112a05beb148ea016a"
+};
+
+// 🔌 Inicjalizacja Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ✅ Lista dozwolonych użytkowników testowych
+const allowedUsers = ["testowy.uzytkownik@gmail.com"];
+
+// 🖱️ Przyciski w DOM
+const loginButton = document.getElementById("login");
+const logoutButton = document.getElementById("logout");
+const statusText = document.getElementById("status");
+
+// 🧭 Obsługa powrotu z redirect login
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      const user = result.user;
+
+      // 🔐 Sprawdzenie czy użytkownik jest dozwolony
+      if (!allowedUsers.includes(user.email)) {
+        statusText.textContent = `Użytkownik ${user.email} nie ma dostępu.`;
+        signOut(auth);
+        return;
+      }
+
+      // ✅ Zalogowano – pokazujemy status i przekierowujemy
+      statusText.textContent = `Zalogowano jako ${user.displayName}`;
+      setTimeout(() => {
+        window.location.href = "secure.html";
+      }, 1000);
     } else {
-      showLoginError('Brak dostępu', `Konto ${userEmail} nie ma dostępu`);
+      statusText.textContent = "Nie jesteś zalogowany.";
     }
-  } catch (error) {
-    showLoginError('Błąd systemu', error.message);
-  }
+  })
+  .catch((error) => {
+    console.error("Błąd logowania:", error);
+    statusText.textContent = "Błąd podczas logowania.";
+  });
+
+// 🟩 Kliknięcie: logowanie
+if (loginButton) {
+  loginButton.addEventListener("click", () => {
+    signInWithRedirect(auth, provider);
+  });
 }
 
-// Wyświetl błąd logowania
-function showLoginError(title, message) {
-  const statusEl = document.getElementById('loginStatus');
-  if (!statusEl) return;
-  
-  statusEl.innerHTML = `
-    <p class="error">${title}</p>
-    <p>${message}</p>
-    <button class="retry-btn">Spróbuj ponownie</button>
-  `;
-  
-  // Dodaj obsługę przycisku
-  const retryBtn = statusEl.querySelector('.retry-btn');
-  if (retryBtn) retryBtn.addEventListener('click', () => window.location.reload());
+// 🔴 Kliknięcie: wylogowanie
+if (logoutButton) {
+  logoutButton.addEventListener("click", () => {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    });
+  });
 }
