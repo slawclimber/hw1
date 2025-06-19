@@ -22,7 +22,9 @@ const firebaseConfig = {
 
 // 🔌 Inicjalizacja Firebase
 const app = initializeApp(firebaseConfig);
+console.log("app:", app);
 const auth = getAuth(app);
+console.log("auth", auth);
 const provider = new GoogleAuthProvider();
 
 // ✅ Lista dozwolonych użytkowników testowych
