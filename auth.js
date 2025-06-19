@@ -26,7 +26,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // ✅ Lista dozwolonych użytkowników testowych
-const allowedUsers = ["testowy.uzytkownik@gmail.com"];
+const allowedUsers = ["slawecheck@gmail.com"];
 
 // 🖱️ Przyciski w DOM
 const loginButton = document.getElementById("login");
