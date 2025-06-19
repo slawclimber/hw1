@@ -28,54 +28,60 @@ const provider = new GoogleAuthProvider();
 // ✅ Lista dozwolonych użytkowników testowych
 const allowedUsers = ["slawecheck@gmail.com"];
 
-// 🖱️ Przyciski w DOM
-const loginButton = document.getElementById("login");
-const logoutButton = document.getElementById("logout");
-const statusText = document.getElementById("status");
-
-// 🧭 Obsługa powrotu z redirect login
 getRedirectResult(auth)
   .then((result) => {
-	  console.log("Ładuję getRedirectResult...");
-console.log("window.location.href", window.location.href);
     console.log("getRedirectResult:", result);
     if (result && result.user) {
-      console.log("Zalogowano jako:", result.user.email);
       const user = result.user;
+      console.log("Zalogowano jako:", user.email);
 
-      // 🔐 Sprawdzenie czy użytkownik jest dozwolony
+      const statusText = document.getElementById("status");
+      if (statusText) statusText.textContent = `Zalogowano jako ${user.email}`;
+
       if (!allowedUsers.includes(user.email)) {
-        statusText.textContent = `Użytkownik ${user.email} nie ma dostępu.`;
-        signOut(auth);
-        return;
+        if (statusText)
+          statusText.textContent = `Brak dostępu dla ${user.email}`;
+        return signOut(auth);
       }
 
-      // ✅ Zalogowano – pokazujemy status i przekierowujemy
-      statusText.textContent = `Zalogowano jako ${user.displayName}`;
+      // ✅ Sukces — przekieruj
       setTimeout(() => {
         window.location.href = "secure.html";
       }, 1000);
     } else {
-      statusText.textContent = "Nie jesteś zalogowany.";
+      console.log("Brak użytkownika — nie zalogowano.");
     }
   })
   .catch((error) => {
-    console.error("Błąd logowania:", error);
-    statusText.textContent = "Błąd podczas logowania.";
+    console.error("Błąd logowania przez redirect:", error);
   });
 
-// 🟩 Kliknięcie: logowanie
-if (loginButton) {
-  loginButton.addEventListener("click", () => {
-    signInWithRedirect(auth, provider);
-  });
-}
 
-// 🔴 Kliknięcie: wylogowanie
-if (logoutButton) {
-  logoutButton.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "login.html";
+// ✅ 2. Dopiero po załadowaniu DOM dodaj zdarzenia click
+document.addEventListener("DOMContentLoaded", () => {
+  const loginButton = document.getElementById("login");
+  const logoutButton = document.getElementById("logout");
+  const statusText = document.getElementById("status");
+
+  if (loginButton) {
+    loginButton.addEventListener("click", () => {
+      console.log("Rozpoczynam redirect...");
+      signInWithRedirect(auth, provider);
     });
-  });
-}
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      console.log("Wylogowanie");
+      signOut(auth)
+        .then(() => {
+          window.location.href = "login.html";
+        })
+        .catch(console.error);
+    });
+  }
+
+  if (statusText && !auth.currentUser) {
+    statusText.textContent = "Nie jesteś zalogowany.";
+  }
+});
