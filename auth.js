@@ -36,6 +36,8 @@ const statusText = document.getElementById("status");
 // 🧭 Obsługa powrotu z redirect login
 getRedirectResult(auth)
   .then((result) => {
+	  console.log("Ładuję getRedirectResult...");
+console.log("window.location.href", window.location.href);
     console.log("getRedirectResult:", result);
     if (result && result.user) {
       console.log("Zalogowano jako:", result.user.email);
