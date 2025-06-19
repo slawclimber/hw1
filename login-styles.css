@@ -1,0 +1,48 @@
+/* Kontener logowania */
+.login-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.login-container h1 {
+  margin-bottom: 15px;
+}
+
+.login-container p {
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* Przycisk Google */
+.g_id_signin {
+  margin: 30px auto;
+  max-width: 240px;
+}
+
+/* Link powrotu */
+.back-link {
+  margin-top: 30px;
+}
+
+.back-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+/* Debugowanie */
+.debug-info {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 20px;
+  text-align: left;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+}
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strona Chroniona</title>
+  <link rel="stylesheet" href="/hw1/styles.css">
+  <script src="/hw1/auth.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Strona tylko dla zalogowanych</h1>
+      <button class="logout-btn" onclick="logout()">Wyloguj</button>
+    </header>
+    
+    <main>
+      <p>To jest chroniona treść widoczna tylko dla uprawnionych użytkowników.</p>
+      <div id="userInfo" class="status-box"></div>
+    </main>
+  </div>
+  
+  <script>
+    // Wyświetl informacje o użytkowniku
+    const userEmail = localStorage.getItem('user_email');
+    document.getElementById('userInfo').innerHTML = `
+      <p>Zalogowany jako: <strong>${userEmail}</strong></p>
+      <p>Dostęp przyznany: ${new Date().toLocaleDateString()}</p>
+    `;
+  </script>
+</body>
+</html>

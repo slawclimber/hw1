@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moja PWA</title>
+  <meta name="theme-color" content="#4285f4">
+  <link rel="manifest" href="/hw1/manifest.json">
+  <link rel="stylesheet" href="/hw1/styles.css">
+  <script src="/hw1/app.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button id="logoutButton" class="logout-btn">Wyloguj</button>
+      <h1>Witaj w mojej PWA!</h1>
+    </header>
+    
+    <main>
+      <p>To jest instalowalna aplikacja progresywna z logowaniem Google.</p>
+      
+      <div id="installContainer" class="hidden">
+        <button id="installButton" class="install-btn">Zainstaluj aplikację</button>
+      </div>
+      
+      <div id="statusInfo" class="status-box">
+        <!-- Status będzie aktualizowany przez JavaScript -->
+      </div>
+      
+      <button id="testConnection" class="test-btn">Testuj połączenie</button>
+    </main>
+    
+    <footer>
+      <p>© 2023 Moja PWA</p>
+    </footer>
+  </div>
+  
+  <div id="offlineBanner" class="offline-banner hidden">Jesteś offline</div>
+</body>
+</html>

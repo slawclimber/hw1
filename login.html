@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logowanie Google</title>
+  <link rel="stylesheet" href="/hw1/styles.css">
+  <link rel="stylesheet" href="/hw1/login-styles.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/hw1/auth.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="login-container">
+      <h1>Logowanie do aplikacji</h1>
+      <p>Zaloguj się przy użyciu konta Google</p>
+      
+      <div id="g_id_onload"
+           data-client_id="TWÓJ_CLIENT_ID.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleGoogleLogin"
+           data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+           data-type="standard"
+           data-shape="rectangular"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large"
+           data-logo_alignment="left">
+      </div>
+      
+      <div id="loginStatus" class="status-box"></div>
+      <div class="back-link">
+        <a href="/hw1/">Powrót do strony głównej</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

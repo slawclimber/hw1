@@ -1,0 +1,165 @@
+/* Zmienne globalne */
+:root {
+  --primary-color: #4285f4;
+  --secondary-color: #34a853;
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --text-color: #333;
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset i podstawy */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sekcje */
+header {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+  color: #666;
+}
+
+/* Przyciski */
+button {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.install-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.install-btn:hover {
+  background-color: #3367d6;
+}
+
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.test-btn {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: block;
+  margin: 20px auto;
+}
+
+/* Statusy */
+.status-box {
+  background-color: #f0f7ff;
+  border-left: 4px solid var(--primary-color);
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.error {
+  color: var(--error-color);
+  font-weight: bold;
+}
+
+.success {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+/* Tryb offline */
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--error-color);
+  color: white;
+  text-align: center;
+  padding: 5px;
+  z-index: 1000;
+  font-size: 0.9rem;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsywność */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .install-btn, .test-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f1f1f1;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+  }
+  
+  .status-box {
+    background-color: #1a344d;
+  }
+}
