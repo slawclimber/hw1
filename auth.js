@@ -21,8 +21,7 @@ function handleGoogleLogin(response) {
     
     // Lista dozwolonych użytkowników
     const ALLOWED_USERS = [
-      "twój.email@gmail.com",
-      "test@example.com"
+      "slawecheck@gmail.com"
     ].map(email => email.toLowerCase());
     
     // Sprawdź dostęp
