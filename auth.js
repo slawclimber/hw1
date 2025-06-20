@@ -22,10 +22,11 @@ const firebaseConfig = {
 
 // 🔌 Inicjalizacja Firebase
 const app = initializeApp(firebaseConfig);
-console.log("app:", app);
 const auth = getAuth(app);
-console.log("auth", auth);
 const provider = new GoogleAuthProvider();
+console.log("📦 Location on load:", window.location.href);
+console.log("🧠 Online:", navigator.onLine);
+console.log("authDomain:", firebaseConfig.authDomain);
 
 // ✅ Lista dozwolonych użytkowników testowych
 const allowedUsers = ["slawecheck@gmail.com"];
