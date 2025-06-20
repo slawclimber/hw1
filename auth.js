@@ -27,7 +27,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // 🔒 Lista dozwolonych użytkowników
-const allowedUsers = ["twojemail@gmail.com", "inny@gmail.com"];
+const allowedUsers = ["slawecheck@gmail.com"];
 
 // 🔁 Obsługa powrotu z logowania
 getRedirectResult(auth)
