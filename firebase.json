@@ -8,7 +8,7 @@
         "function": "renderSecurePage"
       }
     ]
-  }
+  },
   "functions": {
     "source": "functions"
   }
