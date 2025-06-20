@@ -13,7 +13,7 @@ import {
 // 🔐 Twoja pełna konfiguracja Firebase (UDOSTĘPNIANA PRZEZ FIREBASE KONSOLE)
 const firebaseConfig = {
    apiKey: "AIzaSyBYfO9kmsrq4-N1QenqnBFt_Mk7RFQZkPU",
-    authDomain: "pwa1-463417.firebaseapp.com",
+    authDomain: "pwa1-463417.web.app",
     projectId: "pwa1-463417",
     storageBucket: "pwa1-463417.firebasestorage.app",
     messagingSenderId: "535969974495",
