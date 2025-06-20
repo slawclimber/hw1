@@ -81,30 +81,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ✅ Dynamiczne ładowanie /secure
-  if (window.location.pathname === "/secure") {
+if (window.location.pathname === "/secure") {
+  (async () => {
     const token = localStorage.getItem("idToken");
     if (!token) {
+      console.warn("Token nie znaleziony — przekierowanie na login.");
       window.location.href = "/login.html";
       return;
     }
 
-    fetch("/secure", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Brak dostępu");
-        return res.text();
-      })
-      .then((html) => {
-        document.open();
-        document.write(html);
-        document.close();
-      })
-      .catch((err) => {
-        console.error("Błąd ładowania strony secure:", err);
-        window.location.href = "/login.html";
+    try {
+      const response = await fetch("/secure", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
-  }
+
+      if (!response.ok) throw new Error("Niedozwolony dostęp");
+
+      const html = await response.text();
+
+      document.open();
+      document.write(html);
+      document.close();
+    } catch (err) {
+      console.error("Błąd ładowania strony secure:", err);
+      window.location.href = "/login.html";
+    }
+  })();
+}
+
 });
