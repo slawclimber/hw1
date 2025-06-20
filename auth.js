@@ -8,6 +8,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // 🔐 Twoja pełna konfiguracja Firebase (UDOSTĘPNIANA PRZEZ FIREBASE KONSOLE)
@@ -19,72 +20,91 @@ const firebaseConfig = {
     messagingSenderId: "535969974495",
     appId: "1:535969974495:web:88a7112a05beb148ea016a"
 };
+  
 
-// 🔌 Inicjalizacja Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-console.log("📦 Location on load:", window.location.href);
-console.log("🧠 Online:", navigator.onLine);
-console.log("authDomain:", firebaseConfig.authDomain);
 
-// ✅ Lista dozwolonych użytkowników testowych
-const allowedUsers = ["slawecheck@gmail.com"];
+// 🔒 Lista dozwolonych użytkowników
+const allowedUsers = ["twojemail@gmail.com", "inny@gmail.com"];
 
+// 🔁 Obsługa powrotu z logowania
 getRedirectResult(auth)
   .then((result) => {
-    console.log("getRedirectResult:", result);
     if (result && result.user) {
       const user = result.user;
       console.log("Zalogowano jako:", user.email);
 
-      const statusText = document.getElementById("status");
-      if (statusText) statusText.textContent = `Zalogowano jako ${user.email}`;
-
       if (!allowedUsers.includes(user.email)) {
-        if (statusText)
-          statusText.textContent = `Brak dostępu dla ${user.email}`;
-        return signOut(auth);
+        alert("Nie masz dostępu.");
+        signOut(auth);
+        return;
       }
 
-      // ✅ Sukces — przekieruj
-      setTimeout(() => {
-        window.location.href = "secure.html";
-      }, 1000);
+      // 🔐 Pobieramy token i zapisujemy
+      user.getIdToken().then((token) => {
+        localStorage.setItem("idToken", token);
+        window.location.href = "/secure";
+      });
     } else {
-      console.log("Brak użytkownika — nie zalogowano.");
+      console.log("Brak użytkownika.");
     }
   })
   .catch((error) => {
-    console.error("Błąd logowania przez redirect:", error);
+    console.error("Błąd logowania:", error);
   });
 
-
-// ✅ 2. Dopiero po załadowaniu DOM dodaj zdarzenia click
+// 🟥 Obsługa przycisku logowania (login.html)
 document.addEventListener("DOMContentLoaded", () => {
   const loginButton = document.getElementById("login");
-  const logoutButton = document.getElementById("logout");
   const statusText = document.getElementById("status");
+  const logoutButton = document.getElementById("logout");
 
   if (loginButton) {
     loginButton.addEventListener("click", () => {
-      console.log("Rozpoczynam redirect...");
       signInWithRedirect(auth, provider);
     });
   }
 
   if (logoutButton) {
     logoutButton.addEventListener("click", () => {
-      console.log("Wylogowanie");
-      signOut(auth)
-        .then(() => {
-          window.location.href = "login.html";
-        })
-        .catch(console.error);
+      signOut(auth).then(() => {
+        localStorage.removeItem("idToken");
+        window.location.href = "/login.html";
+      });
     });
   }
 
-  if (statusText && !auth.currentUser) {
-    statusText.textContent = "Nie jesteś zalogowany.";
+  if (statusText && auth.currentUser) {
+    statusText.textContent = `Jesteś już zalogowany jako ${auth.currentUser.email}`;
+  }
+
+  // ✅ Dynamiczne ładowanie /secure
+  if (window.location.pathname === "/secure") {
+    const token = localStorage.getItem("idToken");
+    if (!token) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    fetch("/secure", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Brak dostępu");
+        return res.text();
+      })
+      .then((html) => {
+        document.open();
+        document.write(html);
+        document.close();
+      })
+      .catch((err) => {
+        console.error("Błąd ładowania strony secure:", err);
+        window.location.href = "/login.html";
+      });
   }
 });

@@ -4,20 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logowanie</title>
+  <meta name="theme-color" content="#4285f4" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="login-styles.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="shortcut icon" href="icons/favicon.ico" />
+  <script type="module" src="auth.js"></script>
 </head>
 <body>
-  <h1>Logowanie do aplikacji</h1>
+  <div class="container">
+    <header>
+      <h1>Logowanie do aplikacji</h1>
+    </header>
 
-  <!-- ✅ Przycisk do logowania -->
-  <button id="login">Zaloguj przez Google</button>
+    <main>
+      <button id="login" class="install-btn">Zaloguj przez Google</button>
+      <p id="status"></p>
+    </main>
 
-  <!-- ✅ Komunikaty statusowe -->
-  <p id="status">Ładowanie...</p>
+    <footer>
+      <p>© 2025 Moja PWA</p>
+    </footer>
+  </div>
 
-  <!-- ✅ Obsługa logiki logowania -->
-  <script type="module" src="/auth.js"></script>
+  <div id="offlineBanner" class="offline-banner hidden">Jesteś offline</div>
 </body>
 </html>
-
