@@ -1,5 +1,5 @@
-const CACHE_NAME = 'pwa-auth-cache-v5';
-const BASE_PATH = '/hw1/';
+const CACHE_NAME = 'pwa-auth-cache-v6';
+const BASE_PATH = '/';
 const OFFLINE_URL = `${BASE_PATH}offline.html`;
 
 // Zasoby do cache'owania

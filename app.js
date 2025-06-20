@@ -1,5 +1,5 @@
 // Stałe
-const BASE_PATH = '/hw1/';
+const BASE_PATH = '/';
 
 // Elementy DOM
 const elements = {
